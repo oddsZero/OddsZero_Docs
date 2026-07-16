@@ -122,5 +122,10 @@ export default defineConfig({
   },
   head: [
     ['link', { rel: 'icon', href: '/oddszero-64.png' }],
+    [
+      'script',
+      {},
+      "try{var k='vitepress-theme-appearance';if(!localStorage.getItem(k)){document.documentElement.classList.add('dark')}else if(localStorage.getItem(k)==='light'){document.documentElement.classList.remove('dark')}}catch(e){}",
+    ],
   ],
 })
