@@ -9,6 +9,7 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   ignoreDeadLinks: true,
+  appearance: 'dark',
   markdown: {
     lineNumbers: false,
     codeTransformers: [],
