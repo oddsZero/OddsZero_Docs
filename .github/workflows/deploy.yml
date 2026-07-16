@@ -22,10 +22,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install HonKit (maintained GitBook fork)
-        run: npm install -g honkit
+      - name: Install dependencies (honkit + plugins)
+        run: npm ci
       - name: Build site
-        run: honkit build
+        run: npx honkit build
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./_book
