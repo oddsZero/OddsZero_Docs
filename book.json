@@ -1,0 +1,10 @@
+{
+  "title": "OddsZero Documentation",
+  "description": "Documentation for the OddsZero prediction market protocol",
+  "root": ".",
+  "structure": {
+    "readme": "README.md",
+    "summary": "SUMMARY.md"
+  },
+  "plugins": []
+}
