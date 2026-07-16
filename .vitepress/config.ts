@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress'
 const SUI = 'https://sui.io/'
 
 export default defineConfig({
+  base: '/OddsZero_Docs/',
   title: 'OddsZero',
   description: 'Fully on-chain, multi-outcome prediction market protocol built on Sui.',
   lang: 'en-US',
