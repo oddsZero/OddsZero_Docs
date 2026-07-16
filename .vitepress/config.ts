@@ -10,6 +10,17 @@ export default defineConfig({
   lastUpdated: true,
   ignoreDeadLinks: true,
   appearance: 'dark',
+  transformHead: ({ head }) => {
+    // Make the CSS a normal stylesheet (most cache/compat-safe) instead of
+    // VitePress's default "preload stylesheet" which some browsers skip.
+    for (const tag of head) {
+      if (tag[0] === 'link' && tag[1] && tag[1].rel === 'preload stylesheet') {
+        tag[1].rel = 'stylesheet'
+        delete tag[1].as
+      }
+    }
+    head.push(['meta', { 'http-equiv': 'Cache-Control', content: 'no-cache, must-revalidate' }])
+  },
   markdown: {
     lineNumbers: false,
     codeTransformers: [],
