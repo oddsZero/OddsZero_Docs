@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
+import '../styles/main.css'
 
 const logo = withBase('/oddszero-64.png')
 

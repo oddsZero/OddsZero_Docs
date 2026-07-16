@@ -2,6 +2,7 @@
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import HomePage from './components/HomePage.vue'
+import './styles/main.css'
 
 const { Layout } = DefaultTheme
 const { frontmatter, page } = useData()
