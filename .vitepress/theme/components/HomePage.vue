@@ -16,42 +16,42 @@ const sections = [
     icon: '◈',
     title: 'Core Concepts',
     desc: 'Prediction markets, the conditional-token model, and collateral — explained for everyone.',
-    href: '/concepts/',
+    href: withBase('/concepts/'),
     tag: 'Start here',
   },
   {
     icon: '⚙',
     title: 'Protocol',
     desc: 'Market lifecycle, AMM math, fees, resolution, disputes, governance, treasury and more.',
-    href: '/protocol/lifecycle',
+    href: withBase('/protocol/lifecycle'),
     tag: 'Deep dive',
   },
   {
     icon: '✦',
     title: 'Guides',
     desc: 'Trade, create markets, build on the SDK, and deploy the contracts yourself.',
-    href: '/guides/user-guide',
+    href: withBase('/guides/user-guide'),
     tag: 'Hands-on',
   },
   {
     icon: '⛨',
     title: 'Security',
     desc: 'Invariants, threat model, and exactly where to look when auditing the Move contracts.',
-    href: '/security/model',
+    href: withBase('/security/model'),
     tag: 'For researchers',
   },
   {
     icon: '⌘',
     title: 'Reference',
     desc: 'On-chain events, the full error catalog, and a glossary of terms.',
-    href: '/reference/events',
+    href: withBase('/reference/events'),
     tag: 'Lookup',
   },
   {
     icon: '?',
     title: 'FAQ',
     desc: 'Common questions about markets, fees, resolution, and redemption.',
-    href: '/faq',
+    href: withBase('/faq'),
     tag: 'Quick answers',
   },
 ]
@@ -60,17 +60,17 @@ const sections = [
 <template>
   <div class="oz-home">
     <header class="oz-topbar">
-      <a class="oz-brand" href="/">
+      <a class="oz-brand" :href="withBase('/')">
         <img :src="logo" alt="OddsZero" class="oz-brand-logo" />
         <span>OddsZero</span>
       </a>
       <nav class="oz-topnav">
-        <a href="/introduction">Introduction</a>
-        <a href="/concepts/">Concepts</a>
-        <a href="/protocol/lifecycle">Protocol</a>
-        <a href="/guides/user-guide">Guides</a>
-        <a href="/security/model">Security</a>
-        <a href="/faq">FAQ</a>
+        <a :href="withBase('/introduction')">Introduction</a>
+        <a :href="withBase('/concepts/')">Concepts</a>
+        <a :href="withBase('/protocol/lifecycle')">Protocol</a>
+        <a :href="withBase('/guides/user-guide')">Guides</a>
+        <a :href="withBase('/security/model')">Security</a>
+        <a :href="withBase('/faq')">FAQ</a>
       </nav>
       <a class="oz-ghost-btn" href="https://github.com/oddsZero" target="_blank" rel="noreferrer">GitHub ↗</a>
     </header>
@@ -87,8 +87,8 @@ const sections = [
         redeem winning positions 1:1 — all settled on-chain.
       </p>
       <div class="oz-cta">
-        <a class="oz-primary-btn" href="/introduction">Read the docs →</a>
-        <a class="oz-secondary-btn" href="/protocol/lifecycle">Explore the protocol</a>
+        <a class="oz-primary-btn" :href="withBase('/introduction')">Read the docs →</a>
+        <a class="oz-secondary-btn" :href="withBase('/protocol/lifecycle')">Explore the protocol</a>
       </div>
       <div class="oz-stats">
         <div v-for="s in stats" :key="s.label" class="oz-stat">
