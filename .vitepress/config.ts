@@ -10,8 +10,8 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   ignoreDeadLinks: true,
-  // Enable the dark/light toggle. We default to dark via an inline script
-  // below (so returning visitors keep their choice), but the switch now works.
+  // Enable the dark/light toggle. The theme defaults to dark via a small
+  // inline script in Layout.vue; visitors can still switch to light.
   appearance: true,
   transformHead: ({ head }) => {
     // Make the CSS a normal stylesheet (most cache/compat-safe) instead of
@@ -23,13 +23,6 @@ export default defineConfig({
       }
     }
     head.push(['meta', { 'http-equiv': 'Cache-Control', content: 'no-cache, must-revalidate' }])
-    // Default to dark on first visit (no stored preference yet). Visitors who
-    // toggle to light get their choice persisted by VitePress.
-    head.push([
-      'script',
-      { id: 'oz-theme-default', inject: true },
-      `try{if(!localStorage.getItem('vitepress-theme-appearance')){document.documentElement.classList.add('dark')}else if(localStorage.getItem('vitepress-theme-appearance')==='light'){document.documentElement.classList.remove('dark')}}catch(e){}`,
-    ])
   },
   markdown: {
     lineNumbers: false,
