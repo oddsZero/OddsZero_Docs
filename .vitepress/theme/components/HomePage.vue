@@ -1,8 +1,30 @@
 <script setup lang="ts">
-import { withBase } from 'vitepress'
+import { ref } from 'vue'
+import { useData, withBase } from 'vitepress'
 import '../styles/main.css'
 
+const { isDark } = useData()
+
 const logo = withBase('/oddszero-64.png')
+
+const menuOpen = ref(false)
+const closeMenu = () => { menuOpen.value = false }
+
+const toggleTheme = () => {
+  const next = !isDark.value
+  if (next) document.documentElement.classList.add('dark')
+  else document.documentElement.classList.remove('dark')
+  try { localStorage.setItem('vitepress-theme-appearance', next ? 'dark' : 'light') } catch (e) {}
+}
+
+const navLinks = [
+  { text: 'Introduction', href: withBase('/introduction') },
+  { text: 'Concepts', href: withBase('/concepts/') },
+  { text: 'Protocol', href: withBase('/protocol/lifecycle') },
+  { text: 'Guides', href: withBase('/guides/user-guide') },
+  { text: 'Security', href: withBase('/security/model') },
+  { text: 'FAQ', href: withBase('/faq') },
+]
 
 const stats = [
   { value: '100%', label: 'On-chain' },
@@ -57,23 +79,38 @@ const sections = [
 ]
 </script>
 
-<template>
-  <div class="oz-home">
-    <header class="oz-topbar">
-      <a class="oz-brand" :href="withBase('/')">
-        <img :src="logo" alt="OddsZero" class="oz-brand-logo" />
-        <span>OddsZero</span>
-      </a>
-      <nav class="oz-topnav">
-        <a :href="withBase('/introduction')">Introduction</a>
-        <a :href="withBase('/concepts/')">Concepts</a>
-        <a :href="withBase('/protocol/lifecycle')">Protocol</a>
-        <a :href="withBase('/guides/user-guide')">Guides</a>
-        <a :href="withBase('/security/model')">Security</a>
-        <a :href="withBase('/faq')">FAQ</a>
-      </nav>
-      <a class="oz-ghost-btn" href="https://github.com/oddsZero" target="_blank" rel="noreferrer">GitHub ↗</a>
-    </header>
+    <template>
+      <div class="oz-home">
+        <header class="oz-topbar">
+          <a class="oz-brand" :href="withBase('/')">
+            <img :src="logo" alt="OddsZero" class="oz-brand-logo" />
+            <span>OddsZero</span>
+          </a>
+          <nav class="oz-topnav">
+            <a :href="withBase('/introduction')">Introduction</a>
+            <a :href="withBase('/concepts/')">Concepts</a>
+            <a :href="withBase('/protocol/lifecycle')">Protocol</a>
+            <a :href="withBase('/guides/user-guide')">Guides</a>
+            <a :href="withBase('/security/model')">Security</a>
+            <a :href="withBase('/faq')">FAQ</a>
+          </nav>
+          <div class="oz-topbar-actions">
+            <button class="oz-theme-toggle" type="button" :title="isDark ? 'Switch to light theme' : 'Switch to dark theme'" @click="toggleTheme" aria-label="Toggle theme">
+              <span v-if="isDark">☀</span>
+              <span v-else>☾</span>
+            </button>
+            <a class="oz-ghost-btn" href="https://github.com/oddsZero" target="_blank" rel="noreferrer">GitHub ↗</a>
+            <button class="oz-menu-btn" type="button" :aria-expanded="menuOpen" aria-label="Open menu" @click="menuOpen = !menuOpen">☰</button>
+          </div>
+        </header>
+
+        <transition name="oz-fade">
+          <nav v-if="menuOpen" class="oz-mobile-nav">
+            <a v-for="l in navLinks" :key="l.href" :href="l.href" @click="closeMenu">{{ l.text }}</a>
+            <a href="https://github.com/oddsZero" target="_blank" rel="noreferrer" @click="closeMenu">GitHub ↗</a>
+          </nav>
+        </transition>
+
 
     <section class="oz-hero">
       <span class="oz-eyebrow">Fully on-chain · Built on Sui</span>

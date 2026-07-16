@@ -156,8 +156,11 @@ body {
    ========================================================= */
 .oz-home {
   max-width: 1120px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 24px 80px;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .oz-topbar {
@@ -381,20 +384,91 @@ body {
   border-radius: 10px;
 }
 
+/* ---------- FAQ accordions ---------- */
+.oz-faq {
+  border: 1px solid var(--oz-border);
+  border-radius: 14px;
+  background: var(--oz-surface);
+  margin: 14px 0;
+  padding: 0 18px;
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+.oz-faq[open] { border-color: var(--oz-border-strong); background: var(--oz-surface-2); }
+.oz-faq summary {
+  cursor: pointer; list-style: none;
+  font-weight: 700; font-size: 17px; color: var(--oz-text);
+  padding: 16px 0; position: relative;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.oz-faq summary::-webkit-details-marker { display: none; }
+.oz-faq summary::after {
+  content: "+"; flex: none;
+  width: 26px; height: 26px; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--oz-border-strong); color: var(--oz-accent);
+  font-size: 18px; line-height: 1; transition: transform 0.2s ease;
+}
+.oz-faq[open] summary::after { content: "\2212"; transform: rotate(180deg); }
+.oz-faq > p {
+  margin: 0; padding: 0 0 18px; color: var(--oz-text-dim);
+  font-size: 15.5px; line-height: 1.75;
+}
+.oz-faq > p a { color: var(--oz-accent); }
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 11px; height: 11px; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 999px; border: 3px solid transparent; background-clip: content-box; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(91,140,255,0.4); background-clip: content-box; }
 
+/* ---------- Theme toggle (homepage) ---------- */
+.oz-topbar-actions {
+  display: flex; align-items: center; gap: 12px; margin-left: auto;
+}
+.oz-theme-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 999px;
+  border: 1px solid var(--oz-border-strong); background: var(--oz-surface);
+  color: var(--oz-text); font-size: 17px; cursor: pointer; line-height: 1;
+  transition: all 0.18s ease;
+}
+.oz-theme-toggle:hover { border-color: var(--oz-accent); background: var(--oz-surface-2); }
+.oz-menu-btn {
+  display: none; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 12px;
+  border: 1px solid var(--oz-border-strong); background: var(--oz-surface);
+  color: var(--oz-text); font-size: 20px; cursor: pointer; line-height: 1;
+}
+
+/* ---------- Mobile dropdown nav ---------- */
+.oz-mobile-nav {
+  display: flex; flex-direction: column; gap: 2px;
+  margin: -28px 0 24px; padding: 10px 14px;
+  border: 1px solid var(--oz-border); border-radius: 16px;
+  background: var(--oz-surface); backdrop-filter: blur(14px);
+}
+.oz-mobile-nav a {
+  color: var(--oz-text-dim); text-decoration: none; font-size: 16px;
+  font-weight: 600; padding: 12px 10px; border-radius: 10px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.oz-mobile-nav a:hover, .oz-mobile-nav a:active { background: var(--oz-surface-2); color: var(--oz-text); }
+.oz-fade-enter-active, .oz-fade-leave-active { transition: opacity 0.2s ease, transform 0.2s ease; }
+.oz-fade-enter-from, .oz-fade-leave-to { opacity: 0; transform: translateY(-6px); }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   .oz-sections { grid-template-columns: repeat(2, 1fr); }
   .oz-topnav { display: none; }
+  .oz-menu-btn { display: inline-flex; }
 }
 @media (max-width: 600px) {
+  .oz-home { padding: 0 16px 64px; overflow-x: hidden; }
+  .oz-topbar { padding: 12px 0; gap: 12px; }
+  .oz-ghost-btn { display: none; }
   .oz-sections { grid-template-columns: 1fr; }
   .oz-stats { grid-template-columns: repeat(2, 1fr); }
   .VPDoc h1 { font-size: 32px; }
+  .oz-hero { padding: 24px 0 16px; }
 }
 
 /* ---------- Respect reduced motion ---------- */
