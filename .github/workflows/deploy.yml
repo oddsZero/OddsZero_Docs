@@ -1,4 +1,4 @@
-name: Deploy GitBook to GitHub Pages
+name: Deploy Docs to GitHub Pages
 
 on:
   push:
@@ -22,13 +22,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install dependencies (honkit + plugins)
+      - name: Install dependencies
         run: npm ci
-      - name: Build site
-        run: npx honkit build
+      - name: Build with VitePress
+        run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./_book
+          path: .vitepress/dist
 
   deploy:
     needs: build
