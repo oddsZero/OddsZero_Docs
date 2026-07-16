@@ -13,7 +13,7 @@ hero:
       text: View Protocol
       link: /protocol/lifecycle
   image:
-    src: /oddszero.png
+    src: /oddszero-hero.png
     alt: OddsZero
 
 features:

@@ -14,7 +14,7 @@ export default defineConfig({
     codeTransformers: [],
   },
   themeConfig: {
-    logo: '/oddszero.png',
+    logo: '/oddszero-64.png',
     nav: [
       { text: 'Introduction', link: '/introduction' },
       { text: 'Concepts', link: '/concepts/' },
@@ -106,6 +106,6 @@ export default defineConfig({
     darkModeSwitchTitle: 'Switch to dark theme',
   },
   head: [
-    ['link', { rel: 'icon', href: '/oddszero.png' }],
+    ['link', { rel: 'icon', href: '/oddszero-64.png' }],
   ],
 })
