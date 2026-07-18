@@ -30,7 +30,9 @@ Plain-language definitions of terms used throughout this documentation.
 - **Protocol fee** — Fee routed to the treasury on each trade (`protocol_fee_bps`).
 - **Reference price** — Asset price at creation; baseline for price-backed Up/Down resolution.
 - **Redemption** — Exchanging winning shares 1:1 for collateral after resolution.
-- **Referral fee** — Optional fee paid to a referrer (`referral_fee_bps`).
+- **Referral fee** — *Removed.* Referral fees were eliminated; no referrer is paid. The
+  `referral_fee_bps` / `referrals_enabled` governance fields remain for backward
+  compatibility but are unused.
 - **Reserve** — Pooled shares of an outcome held by the AMM.
 - **Share** — A claim on the collateral vault if its outcome wins.
 - **Treasury** — Shared object holding protocol fees and forfeited bonds.

@@ -19,8 +19,9 @@ composed of small, single-responsibility modules that compose into the core
 | `admin` | Capability-based access control | `AdminCap`, `AdminRegistry` |
 | `lp_incentives` | Optional LP reward emissions | `IncentiveVault<T>`, `IncentiveStream<T>` |
 | `price_oracle` | Automated price-backed resolution for short-expiry binary markets | `PriceFeedConfig`, `PriceReading` |
+| `mock_usdc` | Deployable mock USDC (testnet only) so the publisher can mint test collateral | `Treasury` |
 | `events` | Canonical event schemas and typed emit wrappers | (all `*Event` structs) |
-| `errors` | Centralized, stable error-code catalog | (error codes 1–28) |
+| `errors` | Centralized, stable error-code catalog | (error codes 1–33) |
 | `utils` | Overflow-safe math and shared helpers | — |
 
 ## The `Market<T>` object
@@ -37,10 +38,11 @@ needs:
 - `incentive_stream: IncentiveStream<T>` — optional LP reward stream.
 - `price_config: Option<PriceFeedConfig>` — present only for price-backed markets.
 
-Fee parameters (`protocol_fee_bps`, `creator_fee_bps`, `referral_fee_bps`,
+Fee parameters (`protocol_fee_bps` [fixed at 75], `creator_fee_bps` [fixed at 25],
 `dispute_window_ms`, `dispute_bond_bps`, `maker_rebate_bps`, `closing_only_at`) are
 **snapshotted at creation time**, so changing global governance parameters only affects
-newly created markets.
+newly created markets. (Referral fees have been removed; `referrals_enabled` /
+`referral_fee_bps` remain in `Governance` but are unused.)
 
 ## Shared protocol objects
 
@@ -63,7 +65,7 @@ user --buy_shares(payment)--> prediction_market
   1. compute_buy(): split payment into set cost + fees
   2. deposit(set) -> Collateral vault
   3. apply_buy() -> AMMPool reserves + ShareLedger
-  4. route_fees() -> Treasury (protocol) + creator + referrer
+   4. route_fees() -> Treasury (protocol) + creator
   5. credit_position() -> user's PositionInner balances
   6. emit SharesBought
 ```

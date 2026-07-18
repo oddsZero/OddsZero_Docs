@@ -12,7 +12,6 @@ collateral type. It is a shared object created once per coin type by the admin.
 ## What does NOT go in
 
 - **Creator fees** are paid directly to the market creator at trade time.
-- **Referral fees** are paid to the referrer.
 - **Collateral vault** funds (share backing) are never touched by the treasury.
 - **LP incentive rewards** live in a separate `IncentiveVault<T>`.
 

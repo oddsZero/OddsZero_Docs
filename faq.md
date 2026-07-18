@@ -51,9 +51,9 @@ collateral in the vault. See [Core Concepts](concepts/index.md).
 <details class="oz-faq">
 <summary>What are the fees?</summary>
 
-A protocol fee (default 1.00%) plus a creator fee (up to 3.00%) per trade. An optional referral
-fee (up to 0.50%) may apply. Close-out trades in the closing-only window get a discounted
-protocol fee. Fees never dilute share backing. See [Fees](protocol/fees.md).
+A fixed protocol fee (0.75%) plus a fixed creator fee (0.25%) per trade. Close-out trades
+in the closing-only window get a discounted protocol fee (25% maker rebate). Fees never
+dilute share backing. Referral fees have been removed. See [Fees](protocol/fees.md).
 
 </details>
 
@@ -108,8 +108,9 @@ traders from resolution risk. Selling is always allowed.
 <details class="oz-faq">
 <summary>Can I create my own market?</summary>
 
-Yes — any wallet can create a market with ≥ 2 outcomes, a category, an end time, a creator fee,
-and initial liquidity. See the [User Guide](guides/user-guide.md).
+Yes — any wallet can create a market with ≥ 2 outcomes, a category, an end time, and at
+least **10,000 USDC** of initial liquidity (which becomes your own recoverable LP position).
+The creator fee is fixed at 0.25%. See the [User Guide](guides/user-guide.md).
 
 </details>
 

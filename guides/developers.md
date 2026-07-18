@@ -11,7 +11,7 @@ sui-predict/
 ├── contracts/               # Move package `oddszero`
 │   ├── Move.toml
 │   ├── Published.toml       # per-network published ids
-│   ├── sources/             # 14 modules (see Architecture)
+│   ├── sources/             # 15 modules (see Architecture; includes mock_usdc for testnet)
 │   ├── tests/               # Move unit & scenario tests
 │   └── examples/            # test_markets.json fixtures
 └── frontend/                # Next.js 14 dApp

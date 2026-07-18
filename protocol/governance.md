@@ -7,17 +7,23 @@ parameters live in the `Governance` shared object.
 
 | Param | Index | Default | Bound |
 | --- | --- | --- | --- |
-| `protocol_fee_bps` | 0 | 100 (1.00%) | ≤ 1000 (10%) |
+| `protocol_fee_bps` | 0 | **75 (0.75%) — fixed** | only `75` accepted |
 | `max_creator_fee_bps` | 1 | 300 (3.00%) | ≤ 1000 |
 | `dispute_window_ms` | 2 | 172,800,000 (48h) | 1h – 30d |
 | `dispute_bond_bps` | 3 | 100 (1.00%) | ≤ 1000 |
 | `min_resolution_delay_ms` | 4 | 3,600,000 (1h) | any |
-| `referrals_enabled` | 5 | true | bool |
-| `referral_fee_bps` | 6 | 50 (0.50%) | ≤ 500 |
+| `referrals_enabled` | 5 | true | bool (deprecated / unused) |
+| `referral_fee_bps` | 6 | 50 (0.50%) | ≤ 500 (deprecated / unused) |
 | `proposal_quorum_bps` | 7 | 1000 (10%) | ≤ 10000 |
 | `proposal_threshold_bps` | 8 | 5000 (50%) | ≤ 10000 |
 | `closing_only_window_ms` | 9 | 3,600,000 (1h) | ≤ 30d |
-| `maker_rebate_bps` | 10 | 5000 (50%) | ≤ 10000 |
+| `maker_rebate_bps` | 10 | 2500 (25%) | ≤ 10000 |
+
+> **Note:** `protocol_fee_bps` and `creator_fee_bps` (the latter is not a governance param;
+> it is set by the constant `FIXED_CREATOR_FEE_BPS = 25`) are **immutable**. The governance
+> setter for `protocol_fee_bps` only accepts `75`. The `referrals_enabled` / `referral_fee_bps`
+> fields are retained for backward compatibility but are **unused** — referral fees have been
+> removed.
 
 ## Admin fast-path (`set_param`)
 
@@ -40,9 +46,11 @@ parameter immediately via `set_param`. Possession of `AdminCap` alone is **not**
 
 ## Snapshot semantics
 
-Markets snapshot `protocol_fee_bps`, `referral_fee_bps`, `dispute_window_ms`,
-`dispute_bond_bps`, and `maker_rebate_bps` **at creation**. Changing a global parameter
-therefore only affects markets created afterward — existing markets keep their terms.
+Markets snapshot `protocol_fee_bps`, `dispute_window_ms`, `dispute_bond_bps`, and
+`maker_rebate_bps` **at creation**. The protocol fee is fixed at `75` and the creator fee at
+`25` (both immutable), so those are effectively constant across all markets. Changing an
+adjustable global parameter therefore only affects markets created afterward — existing
+markets keep their terms.
 
 ## Oracle & admin management (`admin` module)
 

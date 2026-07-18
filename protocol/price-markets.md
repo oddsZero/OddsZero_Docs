@@ -47,7 +47,7 @@ This is implemented by `price_oracle.move` and the `create_price_market` entry p
 - Only price-backed markets may be resolved via `resolve_market_price` (the market must have
   a `price_config`).
 - The resolver must still be a registered oracle and must not be the market creator.
-- The category is forced to `"Crypto"` and `referral_fee_bps` is 0 for these markets.
+- The category is forced to `"Crypto"` for these markets.
 
 ## Event schemas
 

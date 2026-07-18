@@ -18,7 +18,7 @@ look, what to verify, and known historical fixes baked into the code.
 | `lp_incentives.move` | index accrual; `claim` vault-balance bound; underfunded remainder handling. |
 | `price_oracle.move` | `derive_outcome` feed/freshness/confidence checks; `reference_price` baseline. |
 | `order_book.move` | `cancel_order` unfilled-only refund; `fill_pair` escrow move; `crosses` price-time. |
-| `errors.move` | stable codes 1–28; no reuse. |
+| `errors.move` | stable codes 1–33; no reuse. |
 | `utils.move` | `safe_*` / `mul_div` overflow/divide-by-zero. |
 
 ## Historical fixes to confirm are present

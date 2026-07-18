@@ -62,9 +62,11 @@ Use the **Create Market** page:
 - **Outcomes** — at least two (e.g. "Yes"/"No", or multiple candidates).
 - **Category** — Politics, Sports, Crypto, Entertainment, Tech, Finance, Science, Other.
 - **End time** — when the event resolves (`ends_at`).
-- **Creator fee** — up to `max_creator_fee_bps` (3.00%); you earn this on every trade.
-- **Initial liquidity** — seeds the AMM (must be > 0).
-- **Referrer** (optional) — an affiliate address.
+- **Creator fee** — fixed at **0.25% (25 bps)**; the value you enter is ignored. You earn
+  this on every trade.
+- **Initial liquidity** — seeds the AMM. Must be **at least 10,000 USDC**; this seed becomes
+  your own recoverable LP position.
+- **Referrer** — no longer used; referral fees have been removed (the field is ignored).
 
 For short-expiry BTC Up/Down markets, use the price-market creator (automated resolution,
 see [Price-Backed Markets](price-markets.md)).

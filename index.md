@@ -46,7 +46,7 @@ features:
 | [Architecture](/concepts/architecture) | Developers & researchers — module map & data flow |
 | [Market Lifecycle](/protocol/lifecycle) | Everyone — open → trading → resolving → resolved |
 | [AMM & Pricing Math](/protocol/amm) | Researchers & traders — exact formulas |
-| [Fees](/protocol/fees) | Everyone — protocol, creator, referral, maker rebate |
+| [Fees](/protocol/fees) | Everyone — protocol, creator, maker rebate |
 | [Resolution & Oracles](/protocol/resolution) | Everyone — how outcomes get decided |
 | [Disputes](/protocol/disputes) | Everyone — bonded dispute window & escalation |
 | [Governance](/protocol/governance) | Everyone — DAO parameters & voting |

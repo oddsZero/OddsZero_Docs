@@ -46,9 +46,10 @@ redeem a winning share because of a shortfall.
 
 ### Why fees never dilute backing
 
-Fees (protocol, creator, referral) are taken **directly from the trader's payment** and are
-**never** added to the collateral vault. The vault only ever grows by the "set cost" portion
-of a trade. This keeps the share backing invariant intact regardless of fees.
+Fees (protocol + creator) are taken **directly from the trader's payment** and are
+**never** added to the collateral vault. Referral fees have been removed. The vault only
+ever grows by the "set cost" portion of a trade. This keeps the share backing invariant
+intact regardless of fees.
 
 ## Collateral
 

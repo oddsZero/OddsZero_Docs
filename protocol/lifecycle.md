@@ -17,9 +17,12 @@ and the frontend (`MARKET_STATUS` in `lib/constants.ts`).
 ## Lifecycle steps
 
 ### 1. Create
-A market is created with `≥ 2` outcomes and a non-zero initial liquidity seed. It is created
-directly in `STATUS_TRADING`. The creator may set a `creator_fee_bps` (capped by
-`max_creator_fee_bps`) and optionally a `referrer` address.
+A market is created with `≥ 2` outcomes and an initial liquidity seed of **at least
+10,000 USDC** (`MIN_INITIAL_LIQUIDITY`). It is created directly in `STATUS_TRADING`. The
+creator may pass a `creator_fee_bps` value, but it is **ignored** — the creator fee is fixed
+at 0.25% (25 bps) — and may optionally pass a `referrer` address, which is also **ignored**
+(referral fees have been removed). The seed liquidity becomes the creator's own recoverable
+LP position.
 
 ### 2. Trade
 While `TRADING`, collateral enters and complete sets are minted; the AMM prices shares.

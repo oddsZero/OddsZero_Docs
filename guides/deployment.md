@@ -52,6 +52,13 @@ Record the new `published-at` in `Published.toml`. After publishing, the protoco
 objects must be initialized once (admin): `create_treasury`, `create_vault` (incentives),
 and treasury funded. Capture their object ids.
 
+> **Testnet tip — minting test collateral.** On testnet the real USDC faucet cannot easily
+> supply the **10,000 USDC** minimum seed required to create a market. The package ships a
+> deployable mock USDC module (`sources/mock_usdc.move`, type `0x…::mock_usdc::USDC`). Publish
+> the package, then call `mock_usdc::mint` (publisher-only) to mint as much test USDC as you
+> need — e.g. `10_000_000_000` base units (10,000 USDC) for one market's seed. This is **not**
+> the real USDC and must never be used on mainnet.
+
 ## Configure the frontend
 
 Copy `.env.example` to `.env.local` and set:
@@ -63,7 +70,7 @@ NEXT_PUBLIC_ADMIN_REGISTRY_ID=0x...
 NEXT_PUBLIC_GOVERNANCE_ID=0x...
 NEXT_PUBLIC_TREASURY_ID=0x...
 NEXT_PUBLIC_INCENTIVE_VAULT_ID=0x...
-NEXT_PUBLIC_USDC_TYPE=0x...::usdc::USDC
+NEXT_PUBLIC_USDC_TYPE=0x...::mock_usdc::USDC   # testnet mock; use the real USDC type on mainnet
 NEXT_PUBLIC_SUI_GRAPHQL_URL=https://sui-testnet.mystenlabs.com/graphql
 NEXT_PUBLIC_API_URL=https://your-indexer/graphql
 NEXT_PUBLIC_ADMIN_HOST=admin.oddzero.com

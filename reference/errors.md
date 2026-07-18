@@ -1,7 +1,7 @@
 # Error Codes
 
 All error codes are declared once in `contracts/sources/errors.move` and reused across
-modules, so they are stable and discoverable. Codes `1–28` are currently assigned.
+modules, so they are stable and discoverable. Codes `1–33` are currently assigned.
 
 | Code | Name | Meaning | Common trigger |
 | --- | --- | --- | --- |
@@ -18,7 +18,7 @@ modules, so they are stable and discoverable. Codes `1–28` are currently assig
 | 11 | `EDisputeWindowClosed` | Dispute raised after window | `now > dispute_deadline` |
 | 12 | `EInsufficientBond` | Dispute bond too small | `bond < required_bond` |
 | 13 | `EAlreadyRedeemed` | Double redemption attempt | Winning balance already 0 |
-| 14 | `EInvalidFee` | Fee param out of bounds | `protocol_fee_bps > 1000`; empty feed id |
+| 14 | `EInvalidFee` | Fee param out of bounds | `protocol_fee_bps != 75`; out-of-range `dispute_bond_bps` / `maker_rebate_bps` |
 | 15 | `EMathOverflow` | Math overflow in AMM/util | Extreme reserves; divide by zero |
 | 16 | `EMissingCapability` | Missing admin capability | (reserved) |
 | 17 | `EZeroAmount` | Amount must be > 0 | 0 payment / 0 liquidity |
@@ -33,6 +33,11 @@ modules, so they are stable and discoverable. Codes `1–28` are currently assig
 | 26 | `EInvalidCloseOut` | Trade would open new exposure | Closing-only buy exceeds held balance |
 | 27 | `EIncentivesDisabled` | LP incentives not enabled | Claim when stream disabled |
 | 28 | `EIncentiveNotAccrued` | No reward accrued | Claim with 0 debt |
+| 29 | `EBondTooLarge` | Dispute bond exceeds cap | `bond > required_bond × 100` |
+| 30 | `EUnverifiedPrice` | Price reading not attested on-chain | `resolve_market_price` with unverified Pyth reading |
+| 31 | `EPriceResolutionDisabled` | Price resolution disabled | Creating/using price market before Pyth wiring |
+| 32 | `EInvalidFeedId` | Malformed / non-allowlisted Pyth feed | `feed_id` ≠ 32 bytes or not on allowlist |
+| 33 | `EInvalidParam` | Governance param out of bounds | `set_param` / `propose` with invalid value |
 
 ## Helper accessors
 
