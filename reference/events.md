@@ -13,6 +13,7 @@ structs have `copy, drop` abilities. `T` is the phantom collateral coin type.
 | `DisputeRaised<T>` | `raise_dispute` | `market_id, disputant, bond, timestamp` |
 | `DisputeResolved<T>` | `finalize_resolution` | `market_id, upheld, new_winning_outcome: Option<u64>` |
 | `SharesRedeemed<T>` | `redeem_shares` | `market_id, redeemer, collateral` |
+| `CreatorSeedRefunded<T>` | `refund_creator_seed` / `reclaim_abandoned_seed` | `market_id, creator, amount` |
 
 ## Trading events
 

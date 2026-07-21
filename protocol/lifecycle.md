@@ -13,16 +13,18 @@ and the frontend (`MARKET_STATUS` in `lib/constants.ts`).
 | `2` | `STATUS_RESOLVING` | Resolving | Oracle proposed an outcome; dispute window open | `raise_dispute`, `finalize_resolution` |
 | `3` | `STATUS_RESOLVED` | Resolved | Outcome finalized | `redeem_shares` |
 | `4` | `STATUS_DISPUTED` | Disputed | An active dispute is pending review | `raise_dispute` (re-extends window), `finalize_resolution` |
+| `5` | `STATUS_ABANDONED` | Abandoned | Never resolved past 30-day grace window | `reclaim_abandoned_seed` (any caller) |
 
 ## Lifecycle steps
 
 ### 1. Create
-A market is created with `≥ 2` outcomes and an initial liquidity seed of **at least
-10,000 USDC** (`MIN_INITIAL_LIQUIDITY`). It is created directly in `STATUS_TRADING`. The
-creator may pass a `creator_fee_bps` value, but it is **ignored** — the creator fee is fixed
-at 0.25% (25 bps) — and may optionally pass a `referrer` address, which is also **ignored**
-(referral fees have been removed). The seed liquidity becomes the creator's own recoverable
-LP position.
+A market is created with `≥ 2` outcomes and an initial liquidity seed of **exactly
+10,000 USDC** (`FIXED_INITIAL_LIQUIDITY`). Any other amount is rejected with
+`EInvalidParam`. It is created directly in `STATUS_TRADING`. The creator may pass a
+`creator_fee_bps` value, but it is **ignored** — the creator fee is fixed at 0.25% (25 bps)
+— and may optionally pass a `referrer` address, which is also **ignored** (referral fees have
+been removed). The seed liquidity is **ring-fenced** in `seed_vault` and becomes the creator's
+own recoverable position; it is **never** usable as AMM counterparty capital.
 
 ### 2. Trade
 While `TRADING`, collateral enters and complete sets are minted; the AMM prices shares.
@@ -49,9 +51,20 @@ outcome and settles bonds. If disputes exist, only the protocol **admin** may fi
 market moves to `STATUS_RESOLVED`.
 
 ### 6. Redeem
-Only winning shares are redeemable 1:1. Non-winning shares are worthless. Redemption pulls
-directly from the collateral vault. Each user's winning balance is zeroed after redemption
-(double-redeem protection).
+Only winning shares are redeemable. Non-winning shares are worthless. Redemption is
+**parimutuel pro-rata**: winners split the `win_refund_pool` (trader-staked collateral
+remaining after the creator's seed is refunded) pro-rata by winning-share weight:
+`payout = floor(your_shares × win_refund_pool / total_winning_shares)`. Each user's winning
+balance is zeroed after redemption (double-redeem protection). On a **Push** (price-market
+tie), both Up and Down holders are refunded pro-rata from `push_refund_pool`.
+
+### 7. Abandoned-market recovery (fallback)
+If a market is **never resolved** (oracle goes silent, stuck in TRADING / RESOLVING /
+DISPUTED), any caller may recover the creator's full seed after `ends_at + 30 days` via
+`reclaim_abandoned_seed`. The market is marked `STATUS_ABANDONED`, the seed is refunded
+(idempotent via `seed_refunded`), and any residual trader collateral is swept to the
+treasury. **In every case — normal close, Push, or abandoned — the creator's seed comes back
+100%.**
 
 ## Timeline diagram
 
@@ -76,6 +89,8 @@ market's lifetime). After this timestamp:
 - `buy_shares` is allowed **only** if it does **not** increase the caller's net exposure to
   that outcome (a true close-out).
 - `sell_shares` is always allowed (it is inherently position-reducing).
-- Close-out trades receive a **maker-rebate-discounted** protocol fee.
+- Close-out trades receive a **maker-rebate-discounted** protocol fee: the effective protocol
+  fee is `protocol_fee_bps × (10000 − maker_rebate_bps) / 10000`. With the default
+  `maker_rebate_bps = 2500 (25%)`, the effective fee is 0.5625% (56.25 bps) on close-outs.
 
 This protects late entrants from oracle/resolution risk right before settlement.

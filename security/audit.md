@@ -7,18 +7,18 @@ look, what to verify, and known historical fixes baked into the code.
 
 | File | What to verify |
 | --- | --- |
-| `prediction_market.move` | `compute_buy`/`compute_sell` fee math; `buy_shares` closing-only gate; `redeem_shares` zeroing; `finalize_resolution` outcome constraints; dispute settlement loop. |
+| `prediction_market.move` | `compute_buy`/`compute_sell` fee math; `buy_shares` closing-only gate; `redeem_shares` parimutuel pro-rata payout; `finalize_resolution` seed refund + outcome constraints; `reclaim_abandoned_seed` 30-day gate + idempotency; dispute settlement loop. |
 | `amm_pool.move` | `buy_cost`/`sell_return` quadratic root & overflow guards; `apply_buy`/`apply_sell` underflow cases (favorite buy); `add_liquidity`/`remove_liquidity` collateral vs `min_reserve` basis. |
 | `share_token.move` | `apply_buy`/`apply_sell` mirror pool; `burn_winning` only post-resolution; the documented note that a ledger-only invariant check would falsely abort. |
 | `coin_wrapper.move` | `deposit`/`withdraw` balance checks; no way to inflate `value`. |
 | `oracle_integration.move` | `propose` timing; `raise_dispute` bond & `MAX_DISPUTES`; `finalize` consensus binding; `split_bond`/`drain_bond` balance safety. |
 | `admin.move` | `is_admin`/`is_oracle` checks; `AdminCap` non-copyable/non-drop. |
-| `governance.move` | `set_param` admin check; `vote` weight bound; `apply_param` bounds; proposal quorum/threshold. |
+| `governance.move` | `set_param` admin check; `vote` weight bound; `apply_param` bounds; proposal quorum/threshold; `price_closing_only_window_ms` / `max_settlement_delay_ms` params. |
 | `treasury.move` | `withdraw` admin + balance check; fee routing. |
 | `lp_incentives.move` | index accrual; `claim` vault-balance bound; underfunded remainder handling. |
-| `price_oracle.move` | `derive_outcome` feed/freshness/confidence checks; `reference_price` baseline. |
+| `price_oracle.move` | `derive_outcome` feed/freshness/confidence checks; `reference_price` baseline; `verified_reading` on-chain Pyth attestation; `push_threshold_bps` tie handling. |
 | `order_book.move` | `cancel_order` unfilled-only refund; `fill_pair` escrow move; `crosses` price-time. |
-| `errors.move` | stable codes 1–33; no reuse. |
+| `errors.move` | stable codes 1–34; no reuse. |
 | `utils.move` | `safe_*` / `mul_div` overflow/divide-by-zero. |
 
 ## Historical fixes to confirm are present
@@ -46,10 +46,16 @@ These are concrete bugs the code comments reference as fixed — verify they rem
 - Buy then sell the same amount near 1:1 → vault should net ~fee only.
 - Mint a complete set via `add_liquidity` then `remove_liquidity` → value-neutral round trip
   (no factor-n loss).
-- After resolution, sum of winning shares across users == collateral in vault.
+- After resolution, sum of winning shares across users × pool / total_winning_shares ==
+  `win_refund_pool` (parimutuel payout cap).
+- Seed refund: after `finalize_resolution`, creator's `seed_vault` is 0 and creator received
+  full 10,000.
+- Push market: both Up and Down holders receive pro-rata payout from `push_refund_pool`.
 - Raise disputes with conflicting claims → admin finalize constrained; bonds settled correctly.
 - Attempt `redeem_shares` twice → second aborts with `EAlreadyRedeemed`.
 - Price market with a stale/wide-confidence reading → `derive_outcome` aborts.
+- `reclaim_abandoned_seed` after 30 days → seed refunded, residual swept, market marked
+  ABANDONED. Calling again is a no-op.
 
 ## Fuzzing surface
 

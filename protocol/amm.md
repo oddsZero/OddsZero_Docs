@@ -121,3 +121,18 @@ LP shares are minted/redeemed against **real collateral**, not `total_reserves`
 
 The contract emits `price = set · 10000 / shares` for a buy and `c · 10000 / shares` for a
 sell — i.e. the effective per-share price in basis points of collateral.
+
+## Settlement math (post-resolution)
+
+After `finalize_resolution`, the creator's seed is refunded and the winner pool is
+snapshotted:
+
+```
+win_refund_pool    = collateral remaining after seed refund  (== total trader stakes)
+win_refund_shares  = total user-held winning shares, snapshotted at finalize
+payout_i           = floor(amt_i × win_refund_pool / win_refund_shares)   for winner i
+```
+
+So `Σ payouts ≤ win_refund_pool` — the vault can **never** be over-drawn. On a **Push**
+(price-market exact tie), both Up and Down holders are refunded pro-rata from
+`push_refund_pool` using the same formula with `push_refund_shares` as the denominator.

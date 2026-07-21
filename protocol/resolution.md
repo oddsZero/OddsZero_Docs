@@ -54,7 +54,8 @@ After the dispute window closes (`now > dispute_deadline`), an oracle or admin c
 
 `ResolutionState<T>` tracks:
 
-- `status`: 0 none, 1 proposed, 2 finalized, 3 disputed.
+- `status`: 0 none, 1 proposed, 2 finalized, 3 disputed. (The `Market.status` field also
+  includes `STATUS_ABANDONED = 5` for markets that were never resolved.)
 - `proposed_outcome`, `final_outcome`.
 - `proposed_at`, `dispute_deadline`.
 - `bond_balance`: separate `Balance<T>` for dispute bonds (never mixed with the share vault).

@@ -38,3 +38,12 @@ price (`buy.price_bps ≥ sell.price_bps` or vice versa). Execution price is the
 ## Events
 
 - `OrderPlaced`, `OrderFilled`, `OrderCancelled`.
+
+## Settlement
+
+After the market resolves, the book must be `settle`d (once settled, no new orders).
+`settle_positions` computes net P&L from long/short positions using the market's authoritative
+winning outcome. For a winning short seller, the full escrow (cover + buyer's cost) is
+refunded. On a Push, all positions are settled at 100% (both long and short receive their
+escrow back). The book is marked `settled = true` after first settlement; no new orders may
+be placed.

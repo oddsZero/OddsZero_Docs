@@ -19,7 +19,9 @@ collateral type. It is a shared object created once per coin type by the admin.
 
 - `create_treasury<T>(registry)` — admin-only, creates the shared treasury.
 - `deposit_fee(fee)` — called internally by trading functions.
-- `withdraw<T>(amount, registry, cap)` — admin-only; transfers `amount` to the admin.
+- `request_withdraw<T>(amount, registry, cap)` — admin-only; sets `unlock_at = now + timelock`
+  (minimum 1 hour).
+- `execute_withdraw<T>(amount, registry, cap)` — admin-only; executes after timelock elapsed.
 - View helpers: `balance`, `total_collected`, `total_withdrawn`.
 
 ## Analytics

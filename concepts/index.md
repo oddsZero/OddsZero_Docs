@@ -24,7 +24,8 @@ market issues **shares**.
 - Multi-outcome market: `["Democrat", "Republican", "Other"]`.
 
 A share represents a claim on the collateral vault **if its outcome wins**. Only the winning
-outcome's shares are redeemable, and they are redeemable 1:1.
+outcome's shares are redeemable, and they are redeemed **parimutuel pro-rata** from the
+trader-staked collateral.
 
 ## The Conditional Token Framework (CTF) "complete set" model
 
@@ -41,8 +42,12 @@ complete set contributes exactly one winning share. Therefore:
 winning shares in circulation  ==  collateral in the vault
 ```
 
-Redemption is therefore **always fully collateralized 1:1**. You can never be unable to
-redeem a winning share because of a shortfall.
+Winners are paid **parimutuel pro-rata** from the **trader-staked collateral only**:
+`payout = floor(your_shares × win_refund_pool / total_winning_shares)`. The creator's
+seed is ring-fenced in a separate `seed_vault` and **always fully refunded** before winners
+are paid, so it can never be drawn on. If the market is heavily one-sided, winners are paid
+pro-rata out of *other traders'* stakes. Redemption is therefore always fully collateralized
+and the seed is never at risk.
 
 ### Why fees never dilute backing
 
@@ -59,6 +64,10 @@ production deployment uses native USDC.
 
 - 1 share = 1 unit of collateral at resolution (1 USDC = 1,000,000 base units).
 - The vault is the only source of redemption funds.
+- The creator must seed the market with **exactly 10,000 USDC** (`FIXED_INITIAL_LIQUIDITY`).
+  This seed is **ring-fenced** in a `seed_vault` and **always fully refunded** to the creator
+  when the market closes or resolves. If a market is **never resolved** (oracle goes silent),
+  anyone may recover the seed after `ends_at + 30 days` via `reclaim_abandoned_seed`.
 
 ## Constant-product AMM
 

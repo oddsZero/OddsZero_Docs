@@ -30,7 +30,8 @@ sui move lint
 ```
 
 The test suite (`contracts/tests/`) covers market creation, trading (AMM), resolution,
-disputes, the new features, and the order book.
+disputes, price markets, the CLOB, LP incentives, attack surface, seed settlement,
+protocol invariants, and edge cases (20+ test modules).
 
 ## Publish
 
@@ -74,6 +75,7 @@ NEXT_PUBLIC_USDC_TYPE=0x...::mock_usdc::USDC   # testnet mock; use the real USDC
 NEXT_PUBLIC_SUI_GRAPHQL_URL=https://sui-testnet.mystenlabs.com/graphql
 NEXT_PUBLIC_API_URL=https://your-indexer/graphql
 NEXT_PUBLIC_ADMIN_HOST=admin.oddzero.com
+NEXT_PUBLIC_CLOCK_ID=0x6   # Sui Clock shared object
 ```
 
 Then `npm install && npm run build && npm start` (see [Developer Guide](developers.md)).

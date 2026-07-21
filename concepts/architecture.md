@@ -37,12 +37,23 @@ needs:
 - `lp_balances: Table<address, u64>` — each LP's LP share balance.
 - `incentive_stream: IncentiveStream<T>` — optional LP reward stream.
 - `price_config: Option<PriceFeedConfig>` — present only for price-backed markets.
+- `price_proposal_reading: Option<PriceReading>` — on-chain Pyth reading captured at
+  proposal time for price-market finalization.
+- `seed_refunded: bool` — idempotency guard for the creator's seed refund.
+- `win_refund_pool: u64` — trader-staked collateral snapshot for parimutuel winner payout.
+- `win_refund_shares: u64` — total winning shares snapshot at finalize.
+- `push_refund_pool: u64` — collateral snapshot for Push (tie) refunds.
+- `push_refund_shares: u64` — total Up+Down shares for Push pro-rata refund.
+- `status` can also be `STATUS_ABANDONED = 5` when a market is never resolved and the
+  30-day grace window passes; `reclaim_abandoned_seed` marks it abandoned and recovers the
+  creator's seed plus sweeps residual collateral to treasury.
 
 Fee parameters (`protocol_fee_bps` [fixed at 75], `creator_fee_bps` [fixed at 25],
 `dispute_window_ms`, `dispute_bond_bps`, `maker_rebate_bps`, `closing_only_at`) are
 **snapshotted at creation time**, so changing global governance parameters only affects
 newly created markets. (Referral fees have been removed; `referrals_enabled` /
-`referral_fee_bps` remain in `Governance` but are unused.)
+`referral_fee_bps` remain in `Governance` but are unused. Additional price-market params
+`price_closing_only_window_ms` and `max_settlement_delay_ms` are also snapshotted.)
 
 ## Shared protocol objects
 
@@ -76,7 +87,9 @@ user --buy_shares(payment)--> prediction_market
 oracle --resolve_market(outcome)--> STATUS_RESOLVING (dispute window opens)
 anyone --raise_dispute(bond)------> STATUS_DISPUTED (window re-extends)
 oracle/admin --finalize_resolution(outcome)--> STATUS_RESOLVED
-user --redeem_shares()------------> withdraw winning shares 1:1 from Collateral
+   1. refund_creator_seed() ------> full 10,000 seed returned to creator (idempotent)
+   2. snapshot_winner_pool() -----> win_refund_pool / win_refund_shares captured
+user --redeem_shares()------------> parimutuel pro-rata payout from win_refund_pool
 ```
 
 ## Frontend

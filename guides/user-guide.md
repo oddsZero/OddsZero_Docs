@@ -64,11 +64,12 @@ Use the **Create Market** page:
 - **End time** — when the event resolves (`ends_at`).
 - **Creator fee** — fixed at **0.25% (25 bps)**; the value you enter is ignored. You earn
   this on every trade.
-- **Initial liquidity** — seeds the AMM. Must be **at least 10,000 USDC**; this seed becomes
-  your own recoverable LP position.
+- **Initial liquidity** — seeds the AMM. Must be **exactly 10,000 USDC**; this seed is
+  **ring-fenced** and **always fully refunded** to you when the market closes or resolves.
+  It is not a bet and not an LP position — it only capitalizes the book.
 - **Referrer** — no longer used; referral fees have been removed (the field is ignored).
 
-For short-expiry BTC Up/Down markets, use the price-market creator (automated resolution,
+For short-expiry BTC Up/Down/Push markets, use the price-market creator (automated resolution,
 see [Price-Backed Markets](price-markets.md)).
 
 > Markets go live immediately in `TRADING` status. Resolution opens after `ends_at +
@@ -79,10 +80,16 @@ min_resolution_delay_ms`.
 Once a market is `RESOLVED` and your outcome won:
 
 1. Open the market (or your **Portfolio**).
-2. Click **Redeem**. Each winning share is paid **1:1** in USDC from the collateral vault.
+2. Click **Redeem**. Your winning shares are paid a **parimutuel pro-rata** share of the
+   trader-staked collateral: `payout = floor(your_shares × pool / total_winning_shares)`.
+   The creator's 10,000 seed was already refunded before winners were paid, so it is never at
+   risk.
 3. Your winning balance is zeroed after redemption (you cannot redeem twice).
 
 Non-winning shares are worthless and do not need action.
+
+On a **Push** (price-market exact tie), both Up and Down holders are refunded pro-rata from
+the collateral snapshot.
 
 ## Portfolio & PnL
 
@@ -111,3 +118,5 @@ See [Disputes](disputes.md) for the full rules.
 - Check the market's `ends_at` and dispute window before entering near expiry.
 - Verify contracts and addresses on [suiscan.xyz](https://suiscan.xyz/testnet).
 - Never share your seed phrase; OddsZero never asks for it.
+- **Creators:** your 10,000 seed is ring-fenced and always fully refunded — even if the market
+  is never resolved (anyone can recover it after 30 days via `reclaim_abandoned_seed`).

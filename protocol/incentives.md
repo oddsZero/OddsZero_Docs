@@ -35,8 +35,9 @@ overflowing user debt.
 - `create_vault<T>(registry)` — admin creates the shared reward vault.
 - `fund_vault<T>(vault, reward, registry)` — admin funds rewards.
 - `withdraw_vault<T>(vault, registry, cap, amount)` — admin withdraws unclaimed rewards.
-- `configure_incentives(market, registry, cap, enabled, rate_per_sec, clock)` — admin (or
-  market admin) enables/reconfigures a market's stream.
+- `configure_incentives(market, registry, cap, enabled, rate_per_sec, duration_ms, clock)` —
+  admin enables/reconfigures a market's stream. `duration_ms > 0` is required when enabling
+  with a non-zero rate; the stream auto-disables at `end_time`.
 - `claim_incentives(market, vault, clock)` — any LP claims accrued rewards.
 - `add_liquidity` / `remove_liquidity` automatically accrue the caller's position before
   changing their LP balance (so no emission is lost or double-counted).

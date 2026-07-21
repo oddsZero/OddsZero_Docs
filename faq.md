@@ -40,11 +40,13 @@ By a constant-product AMM over outcome reserves. The implied probability of an o
 </details>
 
 <details class="oz-faq">
-<summary>Why are my shares always backed 1:1?</summary>
+<summary>Why are my shares always backed?</summary>
 
 Because every unit of collateral mints one share of *every* outcome (a complete set). At
 resolution exactly one outcome wins, so winning shares in circulation always equal the
-collateral in the vault. See [Core Concepts](concepts/index.md).
+collateral available for payout. Winners are paid **parimutuel pro-rata** from the
+trader-staked collateral; the creator's 10,000 seed is ring-fenced and **always fully
+refunded** before winners are paid, so it can never be drawn on. See [Core Concepts](concepts/index.md).
 
 </details>
 
@@ -108,8 +110,8 @@ traders from resolution risk. Selling is always allowed.
 <details class="oz-faq">
 <summary>Can I create my own market?</summary>
 
-Yes — any wallet can create a market with ≥ 2 outcomes, a category, an end time, and at
-least **10,000 USDC** of initial liquidity (which becomes your own recoverable LP position).
+Yes — any wallet can create a market with ≥ 2 outcomes, a category, an end time, and exactly
+**10,000 USDC** of initial liquidity (which is ring-fenced and always fully refunded to you).
 The creator fee is fixed at 0.25%. See the [User Guide](guides/user-guide.md).
 
 </details>

@@ -12,6 +12,8 @@ outcome. Requirements:
 - `now <= dispute_deadline` (the window is still open).
 - A bond of at least `required_bond = bond_for_collateral(collateral, dispute_bond_bps)` is
   posted. Posting 1 wei is rejected (`EInsufficientBond`).
+- The bond must not exceed `MAX_BOND_MULTIPLIER × required_bond` (cap = 100×; `EBondTooLarge`
+  if exceeded).
 - At most `MAX_DISPUTES = 10` disputes per market (prevents perpetual re-extension / griefing).
 
 The bond is held in a **separate** `Balance<T>` inside `ResolutionState` (never the share
@@ -23,8 +25,10 @@ correct). A generic disagreement can omit it.
 
 ## Dispute consensus
 
-`dispute_consensus(state)` returns `Some(outcome)` only if **every** dispute that makes a
-claim agrees on the same outcome. If claims conflict or no claims exist, it returns `None`.
+`dispute_consensus(state)` returns `Some(outcome)` only if **at least 2 distinct eligible
+disputants** (not the oracle, not the creator) claim the same outcome. If fewer than 2
+disputants exist, claims conflict, or no claims are made, it returns `None`. Abstentions
+(`claimed_outcome = None`) do not count toward consensus and do not break it.
 
 ## Finalization rules (`finalize_resolution`)
 

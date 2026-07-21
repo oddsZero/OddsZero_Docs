@@ -20,14 +20,14 @@ modules, so they are stable and discoverable. Codes `1–33` are currently assig
 | 13 | `EAlreadyRedeemed` | Double redemption attempt | Winning balance already 0 |
 | 14 | `EInvalidFee` | Fee param out of bounds | `protocol_fee_bps != 75`; out-of-range `dispute_bond_bps` / `maker_rebate_bps` |
 | 15 | `EMathOverflow` | Math overflow in AMM/util | Extreme reserves; divide by zero |
-| 16 | `EMissingCapability` | Missing admin capability | (reserved) |
+| 16 | `EMissingCapability` | Missing admin capability | Admin registry mismatch |
 | 17 | `EZeroAmount` | Amount must be > 0 | 0 payment / 0 liquidity |
 | 18 | `EInvalidTimestamp` | Clock timestamp invalid for op | `ends_at <= now`; dispute window out of range |
 | 19 | `ENotOracle` | Only oracle may do this | Non-oracle calls `resolve_market` |
 | 20 | `EQuorumNotMet` | Governance quorum/threshold not met | Proposal fails; bad vote weight |
-| 21 | `EAlreadyDisputed` | Already disputed | (reserved; window re-extend handled in module) |
-| 22 | `EInvalidReferral` | Referral code invalid | (reserved) |
-| 23 | `EOrderBookDisabled` | Order book disabled for market | (reserved) |
+| 21 | `EAlreadyDisputed` | Already disputed | Window re-extend handled in module |
+| 22 | `EInvalidReferral` | Referral code invalid | Referrer argument ignored |
+| 23 | `EOrderBookDisabled` | Order book disabled for market | CLOB not enabled |
 | 24 | `EInvalidDisputant` | Oracle/creator self-dealing | Oracle or creator raises dispute / resolves own market |
 | 25 | `EClosingOnly` | Closing-only window active | Buy would open new position near expiry |
 | 26 | `EInvalidCloseOut` | Trade would open new exposure | Closing-only buy exceeds held balance |
@@ -37,7 +37,8 @@ modules, so they are stable and discoverable. Codes `1–33` are currently assig
 | 30 | `EUnverifiedPrice` | Price reading not attested on-chain | `resolve_market_price` with unverified Pyth reading |
 | 31 | `EPriceResolutionDisabled` | Price resolution disabled | Creating/using price market before Pyth wiring |
 | 32 | `EInvalidFeedId` | Malformed / non-allowlisted Pyth feed | `feed_id` ≠ 32 bytes or not on allowlist |
-| 33 | `EInvalidParam` | Governance param out of bounds | `set_param` / `propose` with invalid value |
+| 33 | `EInvalidParam` | Wrong seed amount (must be exactly 10,000) or other bad argument | `set_param` / `propose` / `create_market` with invalid value |
+| 34 | `EAlreadyVoted` | Governance share already voted on this proposal | Switching sides or double-voting |
 
 ## Helper accessors
 

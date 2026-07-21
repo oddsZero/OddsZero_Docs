@@ -30,8 +30,10 @@ enters the vault and a **complete set** of shares is minted (one of every outcom
 constant-product AMM prices the shares so the pool always implies a probability for each
 outcome. When the event ends, a registered oracle proposes the winning outcome and a
 dispute window opens. If no successful dispute occurs, the outcome is finalized and every
-holder of winning shares can redeem them 1:1 for the collateral. A small fee is taken on
-each trade and routed to the protocol treasury and the market creator.
+holder of winning shares can redeem their **parimutuel pro-rata** payout from the
+trader-staked collateral. A small fee is taken on each trade and routed to the protocol
+treasury and the market creator. The creator's seed is ring-fenced and **always fully
+refunded** before winners are paid.
 
 ## Who should read what
 

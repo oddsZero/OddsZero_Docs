@@ -17,17 +17,21 @@ what OddsZero guarantees, what it does not, and the known attack classes it defe
 
 ## Core invariants
 
-1. **1:1 backing.** `Σ_o minted[o] == n · collateral` while trading is open (complete-set
-   model). At resolution, winning shares in circulation == collateral in the vault, so
-   redemption is always fully collateralized.
-2. **Fees never dilute backing.** Fees are taken from the trader's payment and never enter the
+1. **Parimutuel solvency.** Winners are paid pro-rata from the `win_refund_pool` (trader-staked
+   collateral minus the creator's refunded seed). The total payout can never exceed the
+   collateral pool, and the creator's seed is never touched. On a Push, both sides are refunded
+   pro-rata from `push_refund_pool`.
+2. **Creator seed safety.** The creator's 10,000 seed is ring-fenced in `seed_vault` and
+   **always fully refunded** (idempotent via `seed_refunded`) before winners are paid. If a
+   market is never resolved, `reclaim_abandoned_seed` recovers it after `ends_at + 30 days`.
+3. **Fees never dilute backing.** Fees are taken from the trader's payment and never enter the
    collateral vault. Only the "set cost" portion backs shares.
-3. **Ledger mirrors pool.** `ShareLedger` is updated in lockstep with `AMMPool` reserves via
+4. **Ledger mirrors pool.** `ShareLedger` is updated in lockstep with `AMMPool` reserves via
    `apply_buy` / `apply_sell`, so global accounting stays consistent.
-4. **Overflow safety.** All arithmetic uses `utils::safe_*` / `mul_div` and aborts with
+5. **Overflow safety.** All arithmetic uses `utils::safe_*` / `mul_div` and aborts with
    `EMathOverflow` rather than silently breaking invariants. AMM math is `u128` with explicit
    overflow guards.
-5. **Bond separation.** Dispute bonds live in a separate `Balance<T>` inside `ResolutionState`,
+6. **Bond separation.** Dispute bonds live in a separate `Balance<T>` inside `ResolutionState`,
    never mixed with the share-collateral vault.
 
 ## Defended attack classes
@@ -59,6 +63,8 @@ what OddsZero guarantees, what it does not, and the known attack classes it defe
   future work).
 - **Frontend correctness.** The dApp is separate from the contracts; always verify on-chain
   state.
+- **Price-market price accuracy.** Pyth prices are trusted for attestation; the contract
+  validates feed integrity, freshness, and confidence but does not guarantee price correctness.
 
 ## Reporting
 

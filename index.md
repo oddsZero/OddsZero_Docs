@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "OddsZero"
   text: "On-chain prediction markets"
-  tagline: A fully on-chain, multi-outcome prediction market protocol built on Sui with the Move language. Trade outcome shares, provide liquidity, and redeem 1:1 against collateral.
+  tagline: A fully on-chain, multi-outcome prediction market protocol built on Sui with the Move language. Trade outcome shares, provide liquidity, and redeem parimutuel pro-rata against trader-staked collateral.
   actions:
     - theme: brand
       text: Get Started
@@ -52,7 +52,7 @@ features:
 | [Governance](/protocol/governance) | Everyone — DAO parameters & voting |
 | [Treasury](/protocol/treasury) | Researchers & admins — fee collection |
 | [LP Incentives](/protocol/incentives) | LPs — reward emissions |
-| [Price-Backed Markets](/protocol/price-markets) | Traders & devs — automated BTC Up/Down resolution |
+| [Price-Backed Markets](/protocol/price-markets) | Traders & devs — automated BTC Up/Down/Push resolution |
 | [Order Book (CLOB)](/protocol/orderbook) | Traders & devs — optional limit-order venue |
 | [User Guide](/guides/user-guide) | Users — trading, creating markets, redeeming |
 | [Developer Guide](/guides/developers) | Developers — contracts, SDK, frontend |

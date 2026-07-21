@@ -12,7 +12,7 @@ sui-predict/
 │   ├── Move.toml
 │   ├── Published.toml       # per-network published ids
 │   ├── sources/             # 15 modules (see Architecture; includes mock_usdc for testnet)
-│   ├── tests/               # Move unit & scenario tests
+│   ├── tests/               # Move unit & scenario tests (20+ test modules)
 │   └── examples/            # test_markets.json fixtures
 └── frontend/                # Next.js 14 dApp
     ├── app/                 # routes (markets, trade, create, portfolio, admin, api/graphql)
@@ -105,9 +105,10 @@ npm run typecheck
 | Market page | `prediction_market` view fns (`reserve`, `probability_bps`, `volume`, …) |
 | Trade | `buy_shares` / `sell_shares` |
 | Liquidity | `add_liquidity` / `remove_liquidity` / `claim_incentives` |
-| Create market | `create_market` / `create_price_market` |
+| Create market | `create_market` / `create_market_basic` / `create_price_market` |
 | Redeem | `redeem_shares` |
-| Resolve / dispute | `resolve_market` / `raise_dispute` / `finalize_resolution` |
+| Resolve / dispute | `resolve_market` / `raise_dispute` / `finalize_resolution` / `finalize_price_resolution` |
+| Recover abandoned seed | `reclaim_abandoned_seed` |
 | Portfolio PnL | `lib/pnl.ts` from indexed trades + `get_position` |
 
 ## Types

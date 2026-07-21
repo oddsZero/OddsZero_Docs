@@ -18,6 +18,8 @@ parameters live in the `Governance` shared object.
 | `proposal_threshold_bps` | 8 | 5000 (50%) | ≤ 10000 |
 | `closing_only_window_ms` | 9 | 3,600,000 (1h) | ≤ 30d |
 | `maker_rebate_bps` | 10 | 2500 (25%) | ≤ 10000 |
+| `price_closing_only_window_ms` | 11 | 60,000 (1 min) | ≤ 30d |
+| `max_settlement_delay_ms` | 12 | 60,000 (1 min) | ≤ 30d |
 
 > **Note:** `protocol_fee_bps` and `creator_fee_bps` (the latter is not a governance param;
 > it is set by the constant `FIXED_CREATOR_FEE_BPS = 25`) are **immutable**. The governance
